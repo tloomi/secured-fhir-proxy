@@ -86,15 +86,15 @@ async function handlePatientScopes(verifiedJWT, requestedPatient, policy, tenant
   console.log("handling patient scopes")
   console.log("verifiedJWT.body")
   console.log(verifiedJWT.body)
-  if(verifiedJWT.body.fhirUser){
+  if(verifiedJWT.body.launch_response_patient){
     if(verifiedJWT.body.scope.includes('patient/Patient.r') || verifiedJWT.body.scope.includes('patient/*.r')) {
-      console.log("Allowing GET access to: " + "/" + tenantConfig.id + "/" + verifiedJWT.body.fhirUser)
-      policy.allowMethod(AuthPolicy.HttpVerb.GET, "/" + tenantConfig.id + "/" + verifiedJWT.body.fhirUser);
+      console.log("Allowing GET access to: " + "/" + tenantConfig.id + "/" + verifiedJWT.body.launch_response_patient)
+      policy.allowMethod(AuthPolicy.HttpVerb.GET, "/" + tenantConfig.id + "/" + verifiedJWT.body.launch_response_patient);
     }
     if(verifiedJWT.body.scope.includes('patient/Patient.cu') || verifiedJWT.body.scope.includes('patient/*.cu')) {
-      console.log("Allowing POST access to: " + "/" + tenantConfig.id +  "/" + verifiedJWT.body.fhirUser)
-      policy.allowMethod(AuthPolicy.HttpVerb.POST, "/" + tenantConfig.id + "/" +verifiedJWT.body.fhirUser);
-      policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/" + tenantConfig.id + "/" +verifiedJWT.body.fhirUser);
+      console.log("Allowing POST access to: " + "/" + tenantConfig.id +  "/" + verifiedJWT.body.launch_response_patient)
+      policy.allowMethod(AuthPolicy.HttpVerb.POST, "/" + tenantConfig.id + "/" +verifiedJWT.body.launch_response_patient);
+      policy.allowMethod(AuthPolicy.HttpVerb.PUT, "/" + tenantConfig.id + "/" +verifiedJWT.body.launch_response_patient);
     }
   }
 }
@@ -129,7 +129,7 @@ async function handleUserScopes(verifiedJWT, requestedPatient, policy, tenantCon
         if(result && result.allowed) {
           console.log("Relationship found!")
           console.log(result)
-          var allowedURL = "/" + tenantConfig.id + "/Patient/" + requestedPatient
+          var allowedURL = "/" + tenantConfig.id + + "/" + verifiedJWT.body.fhirUser
           policy.allowMethod(AuthPolicy.HttpVerb.GET, allowedURL);
         }
         else {
